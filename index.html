@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حاسبة الأيام</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #1f2b45, #3a506b);
+      color: #f4f4f4;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 550px;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    #current-datetime {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      color: #bbb;
+    }
+    
+    .content-box {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    #days-input {
+      width: 75%;
+      padding: 0.8rem 1rem;
+      padding-left: 3.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.2rem;
+      outline: none;
+      transition: background 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      #days-input {
+        width: 65%;
+        font-size: 1rem;
+        padding-left: 2.5rem;
+      }
+    }
+    @media (max-width: 320px) {
+      #days-input {
+        width: 60%;
+        font-size: 1rem;
+        padding-left: 2.5rem;
+      }
+    }
+    @media (max-width: 1024px) {
+      #days-input {
+        width: 60%;
+        font-size: 1rem;
+        padding-left: 2.5rem;
+      }
+    }
+
+    #days-input::placeholder {
+      color: #ccc;
+    }
+
+    #days-input:focus {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      left: 1rem;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    #calculate-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #calculate-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 123, 255, 0.4);
+    }
+
+    #results-wrapper {
+      margin-top: 2rem;
+    }
+
+    #result-box {
+      padding: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    #result-box h2, #result-box h3 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .result-item i {
+      color: #007bff;
+      font-size: 1.4rem;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+      margin: 2rem 0;
+    }
+
+    .hidden { display: none; }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .action-buttons button, .action-buttons a {
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      text-align: center;
+      color: #fff;
+    }
+
+    .action-buttons button i, .action-buttons a i { margin-right: 8px; }
+
+    .copy-btn { background: linear-gradient(45deg, #28a745, #218838); }
+    .copy-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(40, 167, 69, 0.4); }
+
+    .dev-btn { background: linear-gradient(45deg, #6f42c1, #5a2e9b); }
+    .dev-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(111, 66, 193, 0.4); }
+
+    .footer {
+      margin-top: auto;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      background-color: rgba(0, 0, 0, 0.2);
+      width: 100%;
+    }
+
+    .footer a { color: #fff; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+    .footer a:hover { color: #007bff; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 1rem; }
+      .header h1 { font-size: 2rem; }
+      .content-box { padding: 1.5rem; }
+      #days-input { font-size: 1rem; }
+      #calculate-btn, .action-buttons button, .action-buttons a { font-size: 1rem; }
+      #result-box { padding: 1rem; }
+      .result-item { font-size: 1rem; }
+      .result-item i { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>حاسبة الأيام</h1>
+      <p id="current-datetime"></p>
+    </div>
+
+    <div class="content-box">
+      <div class="input-group">
+        <label for="days-input">أدخل عدد الأيام:</label>
+        <div class="input-container">
+          <input type="text" id="days-input" placeholder="مثلاً: 30" pattern="[0-9٠-٩]*" inputmode="numeric" />
+          <i class="fas fa-calendar-alt icon"></i>
+        </div>
+      </div>
+    </div>
+    
+    <button id="calculate-btn">احسب <i class="fas fa-arrow-left"></i></button>
+
+    <div id="results-wrapper" class="hidden">
+      <div class="content-box" id="result-box">
+        <h2>النتيجة</h2>
+        <div class="result-item">
+          <i class="fas fa-calendar-day"></i>
+          <p>اليوم: <span id="day-of-week"></span></p>
+        </div>
+
+        <hr />
+
+        <h3>التاريخ الميلادي</h3>
+        <div class="result-item">
+          <i class="fas fa-calendar-alt"></i>
+          <p>صيغة اجنبية: <span id="gregorian-K"></span></p>
+        </div>
+        <div class="result-item">
+          <i class="fas fa-calendar-alt"></i>
+          <p>صيغة رقمية: <span id="gregorian-iso"></span></p>
+        </div>
+        <div class="result-item">
+          <i class="fas fa-calendar-alt"></i>
+          <p>صيغة عربية: <span id="gregorian-normal"></span></p>
+        </div>
+
+        <hr />
+
+        <h3>التاريخ الهجري</h3>
+        <div class="result-item">
+          <i class="fas fa-moon"></i>
+          <p>التاريخ الهجري: <span id="hijri-date"></span></p>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> نسخ التاريخ</button>
+        <a href="http://www.Ali-altaee.free.nf" target="_blank" class="dev-btn"><i class="fas fa-code"></i> المطور</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 علي الطائي. جميع الحقوق محفوظة.</p>
+    <p>تصميم وبرمجة: <a href="http://www.Ali-altaee.free.nf" target="_blank">علي الطائي</a></p>
+  </footer>
+
+  <script>
+    // -------- الوقت والتاريخ الحاليان (بغداد) --------
+    function updateCurrentDateTime() {
+      const now = new Date();
+      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Baghdad' };
+      const formattedDate = now.toLocaleDateString('ar-IQ', dateOptions);
+      const formattedTime = now.toLocaleTimeString('ar-IQ', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('current-datetime').textContent = `تاريخ اليوم: ${formattedDate} - الوقت: ${formattedTime}`;
+    }
+    setInterval(updateCurrentDateTime, 1000);
+    updateCurrentDateTime();
+
+    // تحويل الأرقام العربية/الفارسية إلى إنجليزية
+    function normalizeDigits(str) {
+      return str
+        .replace(/[\u0660-\u0669]/g, (c) => String(c.charCodeAt(0) - 0x0660)) // Arabic-Indic ٠-٩
+        .replace(/[\u06F0-\u06F9]/g, (c) => String(c.charCodeAt(0) - 0x06f0)); // Extended Arabic-Indic ۰-۹
+    }
+
+    function calculateDate() {
+      const daysInput = document.getElementById('days-input');
+      const cleaned = normalizeDigits(daysInput.value.trim());
+      const daysToAdd = parseInt(cleaned, 10);
+
+      if (isNaN(daysToAdd) || daysToAdd < 0) {
+        alert('الرجاء إدخال عدد أيام صحيح وموجب.');
+        return;
+      }
+
+      const today = new Date();
+      const newDate = new Date(today);
+      newDate.setDate(today.getDate() + daysToAdd);
+
+      const dayOfWeek = newDate.toLocaleDateString('ar-IQ', { weekday: 'long', timeZone: 'Asia/Baghdad' });
+
+      const year = newDate.toLocaleString('en-US', { year: 'numeric', timeZone: 'Asia/Baghdad' });
+      const monthNum = Number(newDate.toLocaleString('en-US', { month: '2-digit', timeZone: 'Asia/Baghdad' }));
+      const dayNum = Number(newDate.toLocaleString('en-US', { day: '2-digit', timeZone: 'Asia/Baghdad' }));
+
+      const y = String(year).padStart(4, '0');
+      const m = String(monthNum).padStart(2, '0');
+      const d = String(dayNum).padStart(2, '0');
+      const gregorianISO = `${y}/${m}/${d}`;
+
+      const gregorianNormal = newDate.toLocaleDateString('ar-IQ', {
+        year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad'
+      });
+
+      const gregorianK = newDate.toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad'
+      });
+
+      const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+        day: 'numeric', month: 'long', year: 'numeric',
+        calendar: 'islamic-civil'
+      }).format(newDate);
+
+      document.getElementById('day-of-week').textContent = dayOfWeek;
+      document.getElementById('gregorian-K').textContent = gregorianK;
+      document.getElementById('gregorian-iso').textContent = gregorianISO;
+      document.getElementById('gregorian-normal').textContent = gregorianNormal;
+      document.getElementById('hijri-date').textContent = hijriDate;
+      document.getElementById('results-wrapper').classList.remove('hidden');
+    }
+
+    document.getElementById('calculate-btn').addEventListener('click', calculateDate);
+
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      const daysInput = normalizeDigits(document.getElementById('days-input').value.trim());
+      const dayOfWeek = document.getElementById('day-of-week').textContent;
+      const gregorianISO = document.getElementById('gregorian-iso').textContent;
+      const gregorianNormal = document.getElementById('gregorian-normal').textContent;
+      const hijriDate = document.getElementById('hijri-date').textContent;
+
+      const textToCopy = `✔️ التاريخ لمدة ${daysInput} يوم هو :
+✅ اليوم: ${dayOfWeek} - الصيغة الرقمية: ${gregorianISO}
+🔘 التاريخ الميلادي: ${gregorianNormal}
+🌙 بالتاريخ الهجري يصادف: ${hijriDate}
+
+تم حساب في موقع 🌐
+Link : http://www.Ali-altaee.free.nf`;
+
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => alert('تم نسخ التفاصيل بنجاح!'))
+        .catch((err) => {
+          console.error('فشل النسخ: ', err);
+          alert('فشل في نسخ التفاصيل.');
+        });
+    });
+  </script>
+</body>
+</html>
