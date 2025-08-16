@@ -1,6 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<meta property="og:title" content="حاسبة الأيام - احسب تاريخ المستقبل" />
+<meta property="og:description" content="أداة سهلة الاستخدام لحساب التاريخ بعد إضافة عدد معين من الأيام وعرضه بالتقويمين الميلادي والهجري." />
+<meta property="og:image" content="https://i.postimg.cc/8cNwc3t7/file-00000000e9d061f8969a2cd60e1040a7.png" />
+<meta property="og:url" content="https://www.day.free.nf" />
+<meta property="og:type" content="website" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="حاسبة الأيام - احسب تاريخ المستقبل" />
+<meta name="twitter:description" content="أداة سهلة الاستخدام لحساب التاريخ بعد إضافة عدد معين من الأيام وعرضه بالتقويمين الميلادي والهجري." />
+<meta name="twitter:image" content="https://i.postimg.cc/8cNwc3t7/file-00000000e9d061f8969a2cd60e1040a7.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>حاسبة الأيام</title>
@@ -8,6 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body {
       background: linear-gradient(135deg, #1f2b45, #3a506b);
@@ -24,8 +37,8 @@
     }
 
     .container {
-      width: 100%;
-      max-width: 550px;
+      width: 90%;
+      max-width: 500px;
       padding: 2rem;
       background-color: rgba(0, 0, 0, 0.2);
       border-radius: 20px;
@@ -33,9 +46,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
     }
 
     .header h1 {
@@ -53,8 +63,8 @@
       font-size: 1rem;
       color: #bbb;
     }
-    
-    .content-box {
+
+    .card {
       background-color: rgba(255, 255, 255, 0.05);
       padding: 2rem;
       border-radius: 15px;
@@ -75,40 +85,41 @@
       position: relative;
     }
 
-    #days-input {
-      width: 75%;
-      padding: 0.8rem 1rem;
-      padding-left: 3.5rem;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 1.2rem;
-      outline: none;
-      transition: background 0.3s;
-    }
+#days-input {
+  width: 75%;
+  padding: 0.8rem 1rem;
+  padding-left: 3.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.2rem;
+  outline: none;
+  transition: background 0.3s;
+}
 
-    @media (max-width: 768px) {
-      #days-input {
-        width: 65%;
-        font-size: 1rem;
-        padding-left: 2.5rem;
-      }
-    }
-    @media (max-width: 320px) {
-      #days-input {
-        width: 60%;
-        font-size: 1rem;
-        padding-left: 2.5rem;
-      }
-    }
-    @media (max-width: 1024px) {
-      #days-input {
-        width: 60%;
-        font-size: 1rem;
-        padding-left: 2.5rem;
-      }
-    }
+@media (max-width: 768px) {
+  #days-input {
+    width: 65%; /* زيادة العرض ليملأ مساحة أكبر على الشاشات الصغيرة */
+    font-size: 1rem; /* تقليل حجم الخط ليكون أكثر ملائمة */
+    padding-left: 2.5rem; /* تعديل المسافة من اليسار */
+  }
+}
+@media (max-width: 320px) {
+  #days-input {
+    width: 60%; /* زيادة العرض ليملأ مساحة أكبر على الشاشات الصغيرة */
+    font-size: 1rem; /* تقليل حجم الخط ليكون أكثر ملائمة */
+    padding-left: 2.5rem; /* تعديل المسافة من اليسار */
+  }
+}
+
+@media (max-width: 1024px) {
+  #days-input {
+    width: 60%; /* زيادة العرض ليملأ مساحة أكبر على الشاشات الصغيرة */
+    font-size: 1rem; /* تقليل حجم الخط ليكون أكثر ملائمة */
+    padding-left: 2.5rem; /* تعديل المسافة من اليسار */
+  }
+}
 
     #days-input::placeholder {
       color: #ccc;
@@ -216,6 +227,9 @@
     .copy-btn { background: linear-gradient(45deg, #28a745, #218838); }
     .copy-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(40, 167, 69, 0.4); }
 
+    .download-btn { background: linear-gradient(45deg, #17a2b8, #138496); }
+    .download-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(23, 162, 184, 0.4); }
+
     .dev-btn { background: linear-gradient(45deg, #6f42c1, #5a2e9b); }
     .dev-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(111, 66, 193, 0.4); }
 
@@ -240,7 +254,7 @@
     @media (max-width: 480px) {
       .container { padding: 1rem; }
       .header h1 { font-size: 2rem; }
-      .content-box { padding: 1.5rem; }
+      .card { padding: 1.5rem; }
       #days-input { font-size: 1rem; }
       #calculate-btn, .action-buttons button, .action-buttons a { font-size: 1rem; }
       #result-box { padding: 1rem; }
@@ -256,53 +270,54 @@
       <p id="current-datetime"></p>
     </div>
 
-    <div class="content-box">
+    <div class="card">
       <div class="input-group">
         <label for="days-input">أدخل عدد الأيام:</label>
         <div class="input-container">
+          <!-- دعم الأرقام العربية ٠-٩ -->
           <input type="text" id="days-input" placeholder="مثلاً: 30" pattern="[0-9٠-٩]*" inputmode="numeric" />
           <i class="fas fa-calendar-alt icon"></i>
         </div>
       </div>
-    </div>
-    
-    <button id="calculate-btn">احسب <i class="fas fa-arrow-left"></i></button>
 
-    <div id="results-wrapper" class="hidden">
-      <div class="content-box" id="result-box">
-        <h2>النتيجة</h2>
-        <div class="result-item">
-          <i class="fas fa-calendar-day"></i>
-          <p>اليوم: <span id="day-of-week"></span></p>
-        </div>
+      <button id="calculate-btn">احسب <i class="fas fa-arrow-left"></i></button>
 
-        <hr />
+      <div id="results-wrapper" class="hidden">
+        <div class="result-box" id="result-box">
+          <h2>النتيجة</h2>
+          <div class="result-item">
+            <i class="fas fa-calendar-day"></i>
+            <p>اليوم: <span id="day-of-week"></span></p>
+          </div>
 
-        <h3>التاريخ الميلادي</h3>
-        <div class="result-item">
-          <i class="fas fa-calendar-alt"></i>
-          <p>صيغة اجنبية: <span id="gregorian-K"></span></p>
-        </div>
-        <div class="result-item">
-          <i class="fas fa-calendar-alt"></i>
-          <p>صيغة رقمية: <span id="gregorian-iso"></span></p>
-        </div>
-        <div class="result-item">
-          <i class="fas fa-calendar-alt"></i>
-          <p>صيغة عربية: <span id="gregorian-normal"></span></p>
-        </div>
+          <hr />
 
-        <hr />
+          <h3>التاريخ الميلادي</h3>
+          <div class="result-item">
+            <i class="fas fa-calendar-alt"></i>
+            <p>صيغة اجنبية: <span id="gregorian-K"></span></p>
+          </div>
+          <div class="result-item">
+            <i class="fas fa-calendar-alt"></i>
+            <p>صيغة رقمية: <span id="gregorian-iso"></span></p>
+          </div>
+          <div class="result-item">
+            <i class="fas fa-calendar-alt"></i>
+            <p>صيغة عربية: <span id="gregorian-normal"></span></p>
+          </div>
 
-        <h3>التاريخ الهجري</h3>
-        <div class="result-item">
-          <i class="fas fa-moon"></i>
-          <p>التاريخ الهجري: <span id="hijri-date"></span></p>
+          <hr />
+
+          <h3>التاريخ الهجري</h3>
+          <div class="result-item">
+            <i class="fas fa-moon"></i>
+            <p>التاريخ الهجري: <span id="hijri-date"></span></p>
+          </div>
         </div>
-      </div>
-      <div class="action-buttons">
-        <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> نسخ التاريخ</button>
-        <a href="http://www.Ali-altaee.free.nf" target="_blank" class="dev-btn"><i class="fas fa-code"></i> المطور</a>
+        <div class="action-buttons">
+          <button id="copy-btn" class="copy-btn"><i class="fas fa-copy"></i> نسخ التاريخ</button>
+          <a href="http://www.Ali-altaee.free.nf" target="_blank" class="dev-btn"><i class="fas fa-code"></i> المطور</a>
+        </div>
       </div>
     </div>
   </div>
@@ -343,11 +358,13 @@
       }
 
       const today = new Date();
-      const newDate = new Date(today);
+      const newDate = new Date(today); // نسخة من اليوم
       newDate.setDate(today.getDate() + daysToAdd);
 
+      // اليوم (اسم اليوم)
       const dayOfWeek = newDate.toLocaleDateString('ar-IQ', { weekday: 'long', timeZone: 'Asia/Baghdad' });
 
+      // صيغ التاريخ الميلادي
       const year = newDate.toLocaleString('en-US', { year: 'numeric', timeZone: 'Asia/Baghdad' });
       const monthNum = Number(newDate.toLocaleString('en-US', { month: '2-digit', timeZone: 'Asia/Baghdad' }));
       const dayNum = Number(newDate.toLocaleString('en-US', { day: '2-digit', timeZone: 'Asia/Baghdad' }));
@@ -365,11 +382,13 @@
         year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Baghdad'
       });
 
-      const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+      // التاريخ الهجري
+            const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
         day: 'numeric', month: 'long', year: 'numeric',
-        calendar: 'islamic-civil'
+        calendar: 'islamic-civil' // أو Islamic-umalqura
       }).format(newDate);
 
+      // ربط النتائج بالعناصر
       document.getElementById('day-of-week').textContent = dayOfWeek;
       document.getElementById('gregorian-K').textContent = gregorianK;
       document.getElementById('gregorian-iso').textContent = gregorianISO;
@@ -380,6 +399,7 @@
 
     document.getElementById('calculate-btn').addEventListener('click', calculateDate);
 
+    // نسخ مختصر التاريخ
     document.getElementById('copy-btn').addEventListener('click', () => {
       const daysInput = normalizeDigits(document.getElementById('days-input').value.trim());
       const dayOfWeek = document.getElementById('day-of-week').textContent;
@@ -393,7 +413,7 @@
 🌙 بالتاريخ الهجري يصادف: ${hijriDate}
 
 تم حساب في موقع 🌐
-Link : http://www.Ali-altaee.free.nf`;
+Link : https://www.day.free.nf`;
 
       navigator.clipboard
         .writeText(textToCopy)
